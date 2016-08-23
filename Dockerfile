@@ -43,17 +43,20 @@ RUN mkdir -p /var/log/supervisor
 RUN apt-get -yqq install openjdk-7-jre-headless
 
 # Install Selenium
+ENV SELENIUM_MAJOR_VERSION 2.53
+ENV SELENIUM_COMPLETE_VERSION 2.53.1
 RUN mkdir -p /opt/selenium
-RUN wget --no-verbose -O /opt/selenium/selenium-server-standalone-2.43.1.jar http://selenium-release.storage.googleapis.com/2.43/selenium-server-standalone-2.43.1.jar
-RUN ln -fs /opt/selenium/selenium-server-standalone-2.43.1.jar /opt/selenium/selenium-server-standalone.jar
+RUN wget --no-verbose -O /opt/selenium/selenium-server-standalone-${SELENIUM_COMPLETE_VERSION}.jar http://selenium-release.storage.googleapis.com/${SELENIUM_MAJOR_VERSION}/selenium-server-standalone-${SELENIUM_COMPLETE_VERSION}.jar
+RUN ln -fs /opt/selenium/selenium-server-standalone-${SELENIUM_COMPLETE_VERSION}.jar /opt/selenium/selenium-server-standalone.jar
 
 # Install Chrome WebDriver
-RUN wget --no-verbose -O /tmp/chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/2.10/chromedriver_linux64.zip
-RUN mkdir -p /opt/chromedriver-2.10
-RUN unzip /tmp/chromedriver_linux64.zip -d /opt/chromedriver-2.10
-RUN chmod +x /opt/chromedriver-2.10/chromedriver
+ENV CHROMEDRIVER_VERSION 2.23
+RUN wget --no-verbose -O /tmp/chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip
+RUN mkdir -p /opt/chromedriver-${CHROMEDRIVER_VERSION}
+RUN unzip /tmp/chromedriver_linux64.zip -d /opt/chromedriver-${CHROMEDRIVER_VERSION}
+RUN chmod +x /opt/chromedriver-${CHROMEDRIVER_VERSION}/chromedriver
 RUN rm /tmp/chromedriver_linux64.zip
-RUN ln -fs /opt/chromedriver-2.10/chromedriver /usr/local/bin/chromedriver
+RUN ln -fs /opt/chromedriver-${CHROMEDRIVER_VERSION}/chromedriver /usr/local/bin/chromedriver
 
 # Install Google Chrome
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
